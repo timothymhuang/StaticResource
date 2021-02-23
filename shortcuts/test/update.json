@@ -1,6 +1,6 @@
 {
     "version":"0.2",
     "url":"https://www.example.com",
-    "alert":"false",
+    "alert":"true",
     "block":"false"
 }
