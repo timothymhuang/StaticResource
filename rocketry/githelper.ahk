@@ -133,6 +133,7 @@ git(action,stoperror:=0){
 
 status(){
     global recurringnotif
+    global localrepo
     cliptemp := ClipboardAll
     Clipboard := ""
     RunWait, cmd.exe /c git status | clip, %localrepo%, hide
