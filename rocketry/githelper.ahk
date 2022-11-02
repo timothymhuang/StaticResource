@@ -8,8 +8,8 @@ log("Program Starting")
 SetTimer, checkupdate, 5000
 
 ; GET REPO DIRECTORY
-IniRead, localrepo, config.ini, settings, localrepo
-IniRead, reponame, config.ini, settings, reponame
+IniRead, localrepo, %A_ScriptDir%\config.ini, settings, localrepo
+IniRead, reponame, %A_ScriptDir%\config.ini, settings, reponame
 if (localrepo = "ERROR" || reponame = "ERROR"){
     Msgbox, 4096, GitHub Desktop Helper, config.ini is missing data or does not exist at all
     Exit
@@ -79,7 +79,7 @@ Loop
 checkupdate:
 api = getapi()
 newversion := getini(api,"version")
-IniRead, currentversion, config.ini, settings, version
+IniRead, currentversion, %A_ScriptDir%\config.ini, settings, version
 if (newversion != currentversion){
     UrlDownloadToFile, https://github.com/timothymhuang/api/blob/main/rocketry/githelperupdater.exe?raw=true, %A_ScriptDir%\githelperupdater.exe
     Run, %A_ScriptDir%\githelperupdater.exe
