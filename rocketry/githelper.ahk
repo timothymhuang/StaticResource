@@ -16,12 +16,8 @@ if (localrepo = "ERROR" || reponame = "ERROR"){
 }
 
 ; SEE IF GIT WORKS
-cliptemp := ClipboardAll
-Clipboard := ""
-RunWait, cmd.exe /c git -v | clip, %localrepo%, hide
-ClipWait, 3
-cmdoutput := Clipboard
-Clipboard := cliptemp
+RunWait, cmd.exe /c git -v > %A_ScriptDir%\cmd.txt, %localrepo%, hide
+FileRead, cmdoutput, %A_ScriptDir%\cmd.txt
 if !(InStr(cmdoutput, "git version")){
     MsgBox, 4096, GitHub Desktop Helper, Please install Git. Make sure Git is also added to PATH. The download page will show in your browser.
     Run, https://git-scm.com/download/win
@@ -39,11 +35,11 @@ notification("Started in "localrepo, 1)
 ; SCRIPT LOOP
 Loop
 {
-    ;status := status()
+    status := status()
     ;CoordMode, tooltip, Screen
     ;ToolTip, %lastfetch% | %lastpull% | %status% | %A_TickCount%, 0, 0
 
-    if(status() = "behind"){
+    if(status = "behind"){
         if git("pull") {
             Goto, breakout
         }
@@ -51,9 +47,7 @@ Loop
             Send, ^1
         }
         notification("Changes downloaded.")
-    }
-
-    if(status() = "ahead" || status() = "diverge") {
+    } else if(status = "ahead" || status() = "diverge") {
             if git("pull") {
                 Goto, breakout
             }
@@ -108,15 +102,12 @@ updatetime()
 
 git(action,stoperror:=0){
     global recurringnotif
+    global localrepo
 
-    cliptemp := ClipboardAll
-    Clipboard := ""
-    RunWait, cmd.exe /c git %action% | clip, %localrepo%, hide
-    ClipWait, 3
-    cmdoutput := Clipboard
-    Clipboard := cliptemp
+    RunWait, cmd.exe /c git %action% > %A_ScriptDir%\cmdgit.txt, %localrepo%, hide
+    FileRead, cmdoutput, %A_ScriptDir%\cmdgit.txt
     log(action . "`n" . cmdoutput)
-    if (action = "pull" && (InStr(cmdoutput, "Updating") || cmdoutput = "" )){
+    if (action = "pull" && || cmdoutput = "" && false){
         notification("ERROR PULLING - Probably new changes to files that conflict with yours. Please open GitHub desktop and attempt to 'pull' to resolve issue.", 3)
         Sleep, 30000
         Return 1
@@ -132,12 +123,10 @@ git(action,stoperror:=0){
 status(){
     global recurringnotif
     global localrepo
-    cliptemp := ClipboardAll
-    Clipboard := ""
-    RunWait, cmd.exe /c git status | clip, %localrepo%, hide
-    ClipWait, 3
-    cmdoutput := Clipboard
-    Clipboard := cliptemp
+
+    RunWait, cmd.exe /c git status > %A_ScriptDir%\cmdstatus.txt, %localrepo%, hide
+    FileRead, cmdoutput, %A_ScriptDir%\cmdstatus.txt
+
     if instr(cmdoutput, "Your branch is behind"){
         Return "behind"
     } else if InStr(cmdoutput, "Your branch is up to date with"){
