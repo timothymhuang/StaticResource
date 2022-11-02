@@ -5,8 +5,9 @@ SendMode Input
 SetWorkingDir, %A_ScriptDir%
 log = 0 ; 0 = Error Logs, 1 = All Logs
 log("Program Starting")
-SetTimer, checkupdate, 5000
+SetTimer, checkupdate, 600000
 IniRead, currentversion, %A_ScriptDir%\config.ini, settings, version
+Menu, Tray, Tip, GitHelper Version %currentversion%
 solidworksopen := False
 openrocketopen := False
 
