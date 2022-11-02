@@ -68,7 +68,7 @@ Loop
     if (ErrorLevel && !solidworksopen){
         solidworksopen := True
         updatetime()
-        if (lastfetch >= 1) {
+        if (lastfetch >= 15) {
             notification("SOLIDWORKS Opened - Please fetch changes before you continue working!", 2)
         }
     } else if (!ErrorLevel && solidworksopen) {
@@ -80,8 +80,8 @@ Loop
     if (ErrorLevel && !openrocketopen){
         openrocketopen := True
         updatetime()
-        if (lastfetch >= 1) {
-            notification("OpenRocket Opened - Please fetch changes before you continue working!")
+        if (lastfetch >= 15) {
+            notification("OpenRocket Opened - Please fetch changes before you continue working!", 2)
         }
     } else if (!ErrorLevel && openrocketopen) {
         openrocketopen := false
