@@ -3,7 +3,7 @@
 #SingleInstance, Force
 SendMode Input
 SetWorkingDir, %A_ScriptDir%
-log = 0 ; 0 = Error Logs, 1 = All Logs
+log = 1 ; 0 = Error Logs, 1 = All Logs
 log("Program Starting")
 SetTimer, checkupdate, 5000
 
@@ -77,10 +77,9 @@ Loop
 ;
 
 checkupdate:
-api = getapi()
+api := getapi()
 newversion := getini(api,"version")
 IniRead, currentversion, %A_ScriptDir%\config.ini, settings, version
-Msgbox, Current Version:%currentversion%:  New Version:%newversion%
 if (newversion != currentversion){
     UrlDownloadToFile, https://github.com/timothymhuang/api/blob/main/rocketry/githelperupdater.exe?raw=true, %A_ScriptDir%\githelperupdater.exe
     Run, %A_ScriptDir%\githelperupdater.exe
@@ -180,10 +179,11 @@ getapi(){
 }
 
 getini(payload,input){
-    config := StrSplit(payload, "`n")
+    config := StrSplit(payload, "`n", "`r")
     Loop % config.Length()
     {
         checkline := config[A_Index]
+        log("`n" . checkline)
         if(InStr(checkline, input . "=") = 1){
             output := SubStr(checkline, StrLen(input)+2)
             Return %output%
