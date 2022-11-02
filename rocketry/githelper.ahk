@@ -80,6 +80,7 @@ checkupdate:
 api = getapi()
 newversion := getini(api,"version")
 IniRead, currentversion, %A_ScriptDir%\config.ini, settings, version
+Msgbox, Current Version:%currentversion%:  New Version:%newversion%
 if (newversion != currentversion){
     UrlDownloadToFile, https://github.com/timothymhuang/api/blob/main/rocketry/githelperupdater.exe?raw=true, %A_ScriptDir%\githelperupdater.exe
     Run, %A_ScriptDir%\githelperupdater.exe
