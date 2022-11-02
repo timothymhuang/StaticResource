@@ -3,7 +3,7 @@
 #SingleInstance, Force
 SendMode Input
 SetWorkingDir, %A_ScriptDir%
-log = 1 ; 0 = Error Logs, 1 = All Logs
+log = 0 ; 0 = Error Logs, 1 = All Logs
 log("Program Starting")
 SetTimer, checkupdate, 5000
 
@@ -41,9 +41,9 @@ Loop
 {
     ; Important Stuff
     updatetime()
-    status := status()
-    CoordMode, tooltip, Screen
-    ToolTip, %lastfetch% | %lastpull% | %status% | %A_TickCount%, 0, 0
+    ;status := status()
+    ;CoordMode, tooltip, Screen
+    ;ToolTip, %lastfetch% | %lastpull% | %status% | %A_TickCount%, 0, 0
 
     if(status() = "behind"){
         if git("pull") {
@@ -149,6 +149,7 @@ status(){
     } else if InStr(cmdoutput, "have diverged"){
         Return "diverge"
     } else {
+        Msgbox % localrepo
         log("Invalid output when running git status`n"cmdoutput, 1)
         if (!recurringnotif) {
             recurringnotif := 1
@@ -184,7 +185,6 @@ getini(payload,input){
     Loop % config.Length()
     {
         checkline := config[A_Index]
-        log("`n" . checkline)
         if(InStr(checkline, input . "=") = 1){
             output := SubStr(checkline, StrLen(input)+2)
             Return %output%
