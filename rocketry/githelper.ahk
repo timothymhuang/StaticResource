@@ -5,6 +5,7 @@ SendMode Input
 SetWorkingDir, %A_ScriptDir%
 log = 0 ; 0 = Error Logs, 1 = All Logs
 log("Program Starting")
+SetTimer, checkupdate, 5000
 
 ; GET REPO DIRECTORY
 IniRead, localrepo, config.ini, settings, localrepo
