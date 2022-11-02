@@ -2,7 +2,7 @@
 SendMode Input
 SetWorkingDir, %A_ScriptDir%
 
-Process, Close, giethelper.exe
+Process, Close, githelper.exe
 UrlDownloadToFile, https://github.com/timothymhuang/api/blob/main/rocketry/githelper.exe?raw=true, %A_ScriptDir%\githelper.exe
 api := getapi()
 version := getini(api,"version")
