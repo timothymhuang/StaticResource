@@ -39,8 +39,6 @@ notification("Started in "localrepo, 1)
 ; SCRIPT LOOP
 Loop
 {
-    ; Important Stuff
-    updatetime()
     ;status := status()
     ;CoordMode, tooltip, Screen
     ;ToolTip, %lastfetch% | %lastpull% | %status% | %A_TickCount%, 0, 0
@@ -69,7 +67,7 @@ Loop
     }
 
     breakout:
-    Sleep, 1000
+    Sleep, 5000
 }
 
 ;
