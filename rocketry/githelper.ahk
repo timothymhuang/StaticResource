@@ -200,6 +200,8 @@ notification(text, options:=""){
 
 getapi(){
     whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
+    whr.SetRequestHeader("Pragma", "no-cache")
+    whr.SetRequestHeader("Cache-Control", "no-cache")
     whr.Open("GET", "https://raw.githubusercontent.com/timothymhuang/api/main/rocketry/githelper.ini", true)
     whr.Send()
     whr.WaitForResponse()
